@@ -1,0 +1,51 @@
+{% extends "base.html" %}{% load static %}
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="medal"><img src="{% static 'img/logo_lycee.png' %}" alt="Lycée Fadel Kane de Matam"></div>
+  <span class="tag">✦ Agent IA pédagogique</span>
+  <h1>Agent pédagogique de<br><em>MATAM KAGGU LAADEE</em></h1>
+  <p class="lead">Votre tuteur intelligent pour des explications et des cours en sciences, langues et humanités. Conçu par et pour le Lycée Fadel Kane de Matam.</p>
+  <div class="cta">
+    {% if user.is_authenticated %}<a class="btn gold" href="#chat">Commencer à apprendre</a>
+    {% else %}<a class="btn gold" href="{% url 'signup' %}">Créer un compte</a>
+    <a class="btn google" href="/accounts/google/login/?process=login">Continuer avec Google</a>{% endif %}
+  </div>
+  <div class="partners">
+    <img src="{% static 'img/logo_club.png' %}" alt="Club scientifique"><img class="big" src="{% static 'img/logo_lycee.png' %}" alt=""><img src="{% static 'img/logo_gssm.png' %}" alt="GSSM Matam">
+  </div><small class="muted caps">Club scientifique · Lycée Fadel Kane · GSSM Matam</small>
+</section>
+
+<section class="subjects" id="matieres"><span class="tag">🎓 Choisissez une matière</span>
+  <h2>{{ subjects|length }} domaines d'expertise</h2>
+  <div class="grid">{% for s in subjects %}
+    <button class="subj" data-slug="{{ s.slug }}" data-title="{{ s.title }}" style="--c:{{ s.color }}">
+      <i>{{ s.icon }}</i><h3>{{ s.title }}</h3><p>{{ s.desc }}</p></button>{% endfor %}
+  </div>
+</section>
+
+<section class="chat" id="chat">
+  {% if user.is_authenticated %}
+  <div class="chathead"><b id="subjTitle">Discussion libre</b><button class="pill" id="clearChat">Nouvelle discussion</button></div>
+  <div id="log" class="log"><div class="bot msg"><div class="bubble">Bonjour ! Je suis <b>Agent Gaandal</b>. Choisissez une matière ci-dessus ou posez-moi directement votre question.</div></div></div>
+  <form id="chatForm" class="composer"><textarea id="q" rows="1" placeholder="Posez votre question…" required></textarea><button class="btn gold" id="send">Envoyer</button></form>
+  {% else %}
+  <div class="card center"><h3>Connectez-vous pour discuter avec Agent Gaandal</h3>
+    <a class="btn gold" href="{% url 'signup' %}">Créer un compte</a> <a class="btn" href="{% url 'login' %}">Se connecter</a></div>
+  {% endif %}
+</section>
+<footer class="foot">© Lycée Fadel Kane de Matam · MATAM KAGGU LAADEE</footer>
+{% endblock %}
+{% block scripts %}
+{% if user.is_authenticated %}
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>window.CSRF="{{ csrf_token }}";window.CHAT_URL="{% url 'chat' %}";</script>
+<script src="{% static 'js/chat.js' %}"></script>
+{% endif %}
+{% endblock %}

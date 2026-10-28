@@ -1,0 +1,15 @@
+{% load static %}
+<audio id="bgm" src="{% static 'audio/wakanda.mp3' %}" loop preload="auto"></audio>
+<div id="audioAsk" class="modal" hidden><div class="card">
+  <img src="{% static 'img/logo_lycee.png' %}" alt="">
+  <h3>Ambiance sonore</h3>
+  <p>Voulez-vous écouter la musique pendant que vous utilisez la plateforme de l'Agent pédagogique de MATAM KAGGU LAADEE ?</p>
+  <div class="row"><button class="btn gold" id="audioYes">Oui, continuer l'écoute</button><button class="btn" id="audioNo">Non, sans son</button></div>
+</div></div>
+<div id="audioBar" class="audiobar" hidden>
+  <button id="aToggle" title="Lecture / Pause">⏸</button>
+  <button id="aDown" title="Diminuer le volume">−</button>
+  <input id="aVol" type="range" min="0" max="100" value="40" aria-label="Volume">
+  <button id="aUp" title="Augmenter le volume">+</button>
+  <button id="aStop" title="Arrêter le son">⏹</button>
+</div>
